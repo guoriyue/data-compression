@@ -62,6 +62,9 @@ class ShannonTreeEncoder(PrefixFreeEncoder):
             codebook[symbol] = current_code
         
         print("codebook", codebook)
+        
+        for symbol in codebook.keys():
+            codebook[symbol] = bitarray(codebook[symbol])
         return codebook
 
     def encode_symbol(self, s):
@@ -72,9 +75,6 @@ class ShannonTreeDecoder(PrefixFreeDecoder):
 
     def __init__(self, prob_dist: ProbabilityDist):
         encoding_table = ShannonTreeEncoder.generate_shannon_tree_codebook(prob_dist)
-        print("encoding_table", encoding_table)
-        for symbol in encoding_table.keys():
-            encoding_table[symbol] = bitarray(encoding_table[symbol])
         self.tree = PrefixFreeTree.build_prefix_free_tree_from_code(encoding_table)
 
     def decode_symbol(self, encoded_bitarray: BitArray) -> Tuple[Any, BitArray]:
@@ -114,10 +114,10 @@ class ShannonTableDecoder(PrefixFreeDecoder):
         for symbol, code in encoding_table.items():
             padding_length = max_codelen - len(code)
             if padding_length == 0:
-                decoding_table[code] = symbol
+                decoding_table[str(bitarray(code))] = symbol
             else:
                 for padding in padding_table[padding_length]:
-                    decoding_table[code + padding] = symbol
+                    decoding_table[str(bitarray(code + padding))] = symbol
         print("decoding_table", decoding_table)
         print("codelen_table", codelen_table)
         print("max_codelen", max_codelen)
@@ -131,9 +131,8 @@ class ShannonTableDecoder(PrefixFreeDecoder):
         if len(encoded_bitarray) < self.max_codelen:
             padded_codeword = padded_codeword + "0" * (self.max_codelen - len(encoded_bitarray))
         
-        decoded_symbol = self.decoding_table[padded_codeword.to01()]
+        decoded_symbol = self.decoding_table[str(padded_codeword)]
         num_bits_consumed = self.codelen_table[decoded_symbol]
-        # print("padded_codeword.to01(), num_bits_consumed", padded_codeword.to01(), num_bits_consumed)
         return decoded_symbol, num_bits_consumed
 
 
@@ -151,10 +150,10 @@ def test_shannon_tree_coding_specific_case():
     ]
     
     expected_codewords = [
-        {"A": "0", "B": "1"},
-        {"A": "00", "B": "01", "C": "10", "D": "11"},
-        {"A": "0", "B": "10", "C": "1110", "D": "110"},
-        {"A": "0", "B": "1000"}
+        {"A": bitarray("0"), "B": bitarray("1")},
+        {"A": bitarray("00"), "B": bitarray("01"), "C": bitarray("10"), "D": bitarray("11")},
+        {"A": bitarray("0"), "B": bitarray("10"), "C": bitarray("1110"), "D": bitarray("110")},
+        {"A": bitarray("0"), "B": bitarray("1000")}
     ]
     
     def test_encoded_symbol(prob_dist, expected_codeword_dict):
