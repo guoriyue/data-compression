@@ -29,15 +29,77 @@ def encode_prob_dist(prob_dist: ProbabilityDist) -> BitArray:
         BitArray: encoded bit array
     """
     prob_dict = prob_dist.prob_dict # dictionary mapping symbols to probabilities
-
     #########################
     # ADD CODE HERE
     # Following functions from utils can be useful to implement this
     # bits = BitArray(), bits.frombytes(byte_array), uint_to_bitarray
+    # print("encode prob_dict", prob_dict)
+    # {0: 0.4, 1: 0.2, 255: 0.4}
+    
+    # class NodeTree(object):
+    #     def __init__(self, left=None, right=None):
+    #         self.left = left
+    #         self.right = right
 
-    raise NotImplementedError("You need to implement encode_prob_dist")
-    #########################
+    #     def children(self):
+    #         return self.left, self.right
 
+    #     def __str__(self):
+    #         return self.left, self.right
+        
+    # def huffman_code_tree(node, binString=''):
+    #     '''
+    #     Function to find Huffman Code
+    #     '''
+    #     if not isinstance(node, NodeTree):
+    #         return {node: binString}
+    #     # print("node.children()", node.children())
+    #     l, r = node.children()
+    #     d = dict()
+    #     d.update(huffman_code_tree(l, binString + '0'))
+    #     d.update(huffman_code_tree(r, binString + '1'))
+    #     return d
+
+
+    # def make_tree(nodes):
+    #     while len(nodes) > 1:
+    #         (key1, c1) = nodes[-1]
+    #         (key2, c2) = nodes[-2]
+    #         nodes = nodes[:-2]
+    #         node = NodeTree(key1, key2)
+    #         nodes.append((node, c1 + c2))
+    #         nodes = sorted(nodes, key=lambda x: (x[1], x[0]), reverse=True)
+    #     return nodes[0][0]
+
+    
+    
+    # freq = sorted(prob_dict.items(), key=lambda x: (x[1], x[0]), reverse=True)
+    # node = make_tree(freq)
+    # encoding = huffman_code_tree(node)
+    
+    # for i in encoding:
+    #     print(f'{i} : {encoding[i]}')
+
+    # # Serialize probabilities
+    # prob_count = len(prob_dict)
+    # encoded_probdist_bitarray = BitArray(uint_to_bitarray(prob_count, 8))
+    # for i in encoding:
+    #     encoded_probdist_bitarray += uint_to_bitarray(i, 8)
+    #     encoded_probdist_bitarray += uint_to_bitarray(len(encoding[i]), 8)
+    #     encoded_probdist_bitarray += BitArray(encoding[i])
+
+    # print("encoded_probdist_bitarray", encoded_probdist_bitarray)
+    # #########################
+    
+    prob_count = len(prob_dict)
+    encoded_probdist_bitarray = BitArray(uint_to_bitarray(prob_count, 128))
+    for i in prob_dict:
+        encoded_probdist_bitarray += uint_to_bitarray(i, 8)
+        encoded_probdist_bitarray += uint_to_bitarray(int(prob_dict[i] * 2**128), 128)
+
+
+    print("encoded 01 length", len(encoded_probdist_bitarray.to01()))
+    print("prob_dict", prob_dict)
     return encoded_probdist_bitarray
 
 
@@ -55,12 +117,46 @@ def decode_prob_dist(bitarray: BitArray) -> Tuple[ProbabilityDist, int]:
     # ADD CODE HERE
     # Following functions from utils can be useful to implement this
     # bitarray.tobytes() and bitarray_to_uint()
-
-    raise NotImplementedError("You need to implement decode_prob_dist")
-    #########################
-
+    
+    index = 0
+    prob_count = bitarray_to_uint(bitarray[index:index+128])
+    index += 128
+    prob_dict = {}
+    for _ in range(prob_count):
+        symbol = bitarray_to_uint(bitarray[index:index+8])
+        index += 8
+        prob = bitarray_to_uint(bitarray[index:index+128]) / 2**128
+        index += 128
+        prob_dict[symbol] = prob
+    
+    # print("prob_dict", prob_dict)
+    num_bits_read = index
+    print("prob_dict", prob_dict)
     prob_dist = ProbabilityDist(prob_dict)
+    
     return prob_dist, num_bits_read
+    
+    
+    
+    # index = 0
+    # prob_count = bitarray_to_uint(bitarray[index:index+8])
+    # index += 8
+    # prob_dict = {}
+    # for _ in range(prob_count):
+    #     symbol = bitarray_to_uint(bitarray[index:index+8])
+    #     index += 8
+    #     codelen = bitarray_to_uint(bitarray[index:index+8])
+    #     index += 8
+    #     code = bitarray[index:index+codelen]
+    #     index += codelen
+    #     prob_dict[symbol] = code.to01()
+
+    # print("prob_dict", prob_dict)
+    # num_bits_read = index
+    # #########################
+
+    # prob_dist = ProbabilityDist(prob_dict)
+    # return prob_dist, num_bits_read
 
 
 def print_huffman_tree(prob_dist):

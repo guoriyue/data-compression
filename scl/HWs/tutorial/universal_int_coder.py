@@ -21,7 +21,11 @@ class UniversalIntegerEncoder(DataEncoder):
         #########################
         # ADD CODE HERE
         # Use the self.uint_encoder here
-        raise NotImplementedError
+        # raise NotImplementedError
+        if x <= 0:
+            return self.uint_encoder.encode_symbol(2*(-x))
+        else:
+            return self.uint_encoder.encode_symbol(2*x - 1)
         ########################
 
     def encode_block(self, data_block: DataBlock) -> BitArray:
@@ -40,7 +44,10 @@ class UniversalIntegerDecoder(DataDecoder):
         #########################
         # ADD CODE HERE
         # Use the self.uint_decoder here
-        raise NotImplementedError
+        # raise NotImplementedError
+        x, num_bits = self.uint_decoder.decode_symbol(encoded_bitarray)
+        return (-x//2, num_bits) if x % 2 == 0 else ((x+1)//2, num_bits)
+        # return self.uint_decoder.decode_symbol(encoded_bitarray)
         ########################
 
     def decode_block(self, bitarray: BitArray):

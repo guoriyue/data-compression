@@ -87,4 +87,5 @@ def test_shubhams_fair_coin_generator():
     my_expectation_of_head = 2 * 0.8 * 0.2 / (1-(0.8**2+0.2**2))**2
     # need to devide by 2 because num_biased_tosses_list contains both heads and tails
     # while my_expectation_of_head only contains heads
+    print("np.mean(np.array(num_biased_tosses_list))/2", np.mean(np.array(num_biased_tosses_list))/2)
     np.testing.assert_almost_equal(np.mean(np.array(num_biased_tosses_list))/2, my_expectation_of_head, decimal=1)
