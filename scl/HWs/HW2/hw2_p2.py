@@ -38,9 +38,10 @@ def generate_samples_vanilla(freqs: Frequencies, data_size):
         # sample a uniform random variable in [0, 1)
         u = np.random.rand()
 
-        ###############################################
-        # ADD CODE HERE
-        raise NotImplementedError("You need to implement this part")
+        for idx, c in enumerate(cumul_list[1:]):
+            if u < c:
+                generated_samples_list.append(symbol_list[idx])
+                break
         ###############################################
 
     return DataBlock(generated_samples_list)
@@ -66,7 +67,7 @@ def generate_samples_aec(freq_initial, data_size):
     aec_params = AECParams()
     encoded_bitarray = uint_to_bitarray(data_size, aec_params.DATA_BLOCK_SIZE_BITS)
     encoded_bitarray += bits
-
+    
     # decode the encoded_bitarray using the Arithmetic coder
     freq_model = FixedFreqModel(freq_initial, max_allowed_total_freq=aec_params.DATA_BLOCK_SIZE_BITS)
     aec_decoder = ArithmeticDecoder(aec_params, freq_model)
