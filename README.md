@@ -31,6 +31,7 @@ Here is a list of algorithms implemented.
 - [zlib (external)](scl/external_compressors/zlib_external.py)
 - [zstd (external)](scl/external_compressors/zstd_external.py)
 - [LZ77](scl/compressors/lz77.py)
+- [LZ77 (sliding window version)](scl/compressors/lz77_sliding_window.py)
 
 
 NOTE -> the tests in each file should be helpful as a "usage" example of each of the compressors. More details are on the project wiki.
@@ -41,6 +42,11 @@ NOTE -> the tests in each file should be helpful as a "usage" example of each of
     ```
     conda create --name myenv python=3.8
     conda activate myenv
+    ```
+- Clone the repo
+    ```
+    git clone https://github.com/kedartatwawadi/stanford_compression_library.git
+    cd stanford_compression_library
     ```
 - Install the `scl` package
     ```
