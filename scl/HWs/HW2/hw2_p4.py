@@ -75,7 +75,8 @@ def decode_op(state, num_symbols):
     
     ####################################################
     # ADD CODE HERE
-    raise NotImplementedError
+    state_prev = state//num_symbols
+    s = state%num_symbols
     ####################################################
 
     return s, state_prev
@@ -137,6 +138,7 @@ class NonUniformDistEncoder(StatefulEncoder):
         :param state: current state
         :return: state: updated state
         '''
+        print("s, state", s, state)
         # decode a "fake" uniform sample between [0, freq[s]]
         fake_locator_symbol, state = decode_op(state, self.freq.freq_dict[s])
         # print(s, fake_locator_symbol, state)
@@ -145,8 +147,8 @@ class NonUniformDistEncoder(StatefulEncoder):
 
         # encode the new symbol
         state = encode_op(state, combined_symbol, self.freq.total_freq)
-        # print(state)
-        # print("*" * 5)
+        print(state)
+        print("*" * 5)
         return state
 
 
@@ -191,9 +193,41 @@ class NonUniformDistDecoder(StatefulDecoder):
         # Step 1: decode (s, z) using joint distribution; (i) decode combined symbol, (ii) find s
         # Step 2: encode z given s; (i) find fake locator symbol, (ii) encode back the fake locator symbol
 
+        # print("state", state)
+        # print("self.find_bin, self.freq.total_freq, self.freq.cumulative_freq_dict, self.freq.freq_dict, self.freq.alphabet",self.find_bin, self.freq.total_freq, self.freq.cumulative_freq_dict, self.freq.freq_dict, self.freq.alphabet)
+        cumulative_freqs_list = list(self.freq.cumulative_freq_dict.values())
+        
+        combined_symbol, state = decode_op(state, self.freq.total_freq)
+        s_idx = self.find_bin(cumulative_freqs_list, combined_symbol)
+        s = self.freq.alphabet[s_idx]
+        # print("s", s)
+        fake_locator_symbol = combined_symbol - self.freq.cumulative_freq_dict[s]
+        # print("fake_locator_symbol combined_symbol", fake_locator_symbol, combined_symbol)
+        # print("state", state, self.freq.freq_dict[s])
+        # state_next = state * num_symbols + s
+        state = encode_op(state, fake_locator_symbol, self.freq.freq_dict[s])
+        # print("state", state)
+        
+        # print("self.find_bin(cumulative_freqs_list, state)", self.find_bin(cumulative_freqs_list, state))
+        
+        # state*f[s] + combined_symbol-f[s] = result_state
+        # fake=
+        
+        # fake_locator_symbol, state = decode_op(state, self.freq.freq_dict[s])
+        # # print(s, fake_locator_symbol, state)
+        # # create a new symbol
+        # combined_symbol = self.freq.cumulative_freq_dict[s] + fake_locator_symbol
+        
+        # fake_locator_symbol, state = decode_op(state, self.freq.freq_dict[s])
+        # # print(s, fake_locator_symbol, state)
+        # # create a new symbol
+        # combined_symbol = self.freq.cumulative_freq_dict[s] + fake_locator_symbol
+        
+        # combined_symbol, state 2 2058
+        # print("combined_symbol, state", combined_symbol, state)
         # You should be able to use encode_op, decode_op to encode/decode the uniformly distributed symbols
 
-        raise NotImplementedError
+        # raise NotImplementedError
         #################################################
 
         return s, state

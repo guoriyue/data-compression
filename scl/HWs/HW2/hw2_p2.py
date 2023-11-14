@@ -70,6 +70,8 @@ def generate_samples_aec(freq_initial, data_size):
     
     # decode the encoded_bitarray using the Arithmetic coder
     freq_model = FixedFreqModel(freq_initial, max_allowed_total_freq=aec_params.DATA_BLOCK_SIZE_BITS)
+    print("freq_model", freq_model)
+    print("encoded_bitarray", encoded_bitarray)
     aec_decoder = ArithmeticDecoder(aec_params, freq_model)
     data_block_decoded, _ = aec_decoder.decode_block(encoded_bitarray)
 
