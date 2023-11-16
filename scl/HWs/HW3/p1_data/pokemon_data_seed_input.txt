@@ -1,0 +1,35 @@
+"id":
+"num": "00
+"name":
+"img": "http://www.serebii.net/pokemongo/pokemon/
+"type":
+"height":
+"weight":
+"candy":
+ Candy",
+"candy_count":
+"egg":
+"spawn_chance":
+"avg_spawns":
+"spawn_time":
+"multipliers":
+"weaknesses": 
+"prev_evolution": 
+"next_evolution": 
+"Fire"
+"Flying"
+"Grass"
+"Poison"
+"Water"
+"Ground"
+"Rock"
+"Electric"
+"Bug"
+"Psychic"
+"Normal"
+"candy": "None"
+"egg": "Not in Eggs"
+"spawn_chance": 0,
+"avg_spawns": 0,
+"spawn_time": "N/A",
+"multipliers": null,

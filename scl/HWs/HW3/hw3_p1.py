@@ -1,5 +1,6 @@
 import argparse
 import os
+
 from scl.compressors.lz77 import LZ77Encoder
 from scl.core.data_block import DataBlock
 

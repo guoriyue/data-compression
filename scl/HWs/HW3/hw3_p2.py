@@ -1,6 +1,5 @@
 from scl.core.data_block import DataBlock
 from scl.core.data_stream import TextFileDataStream
-
 class BurrowsWheelerTransform:
     def __init__(self, delimiter="~"):
         # NOTE: we assume delimiter not present in the input
@@ -20,8 +19,16 @@ class BurrowsWheelerTransform:
         # ADD CODE HERE
         # to generate bwt_str (BWT transformed string)
         # Note: remember to add the delimiter to the string!
-        raise NotImplementedError("Implement this function")
+        # raise NotImplementedError("Implement this function")
         ###############################################
+        
+        input_block_str += self.delimiter
+
+        rotations = [input_block_str[i:] + input_block_str[:i] for i in range(len(input_block_str))]
+
+        rotations.sort()
+
+        bwt_str = ''.join([rotation[-1] for rotation in rotations])
 
         data_bwt_block = DataBlock(list(bwt_str))
         return data_bwt_block
@@ -39,8 +46,22 @@ class BurrowsWheelerTransform:
         # ADD CODE HERE
         # to generate output_str
         # Note: remember to remove the delimiter from the string!
-        raise NotImplementedError("Implement this function")
+        # raise NotImplementedError("Implement this function")
         ###############################################
+
+        # Initialize a list of empty strings
+        table = ['' for i in range(N)]
+        
+        for i in range(N):
+            # Prepend each character of the BWT string to the beginning
+            table = [bwt_block_str[j] + table[j] for j in range(N)]
+            # Sort the table
+            table.sort()
+
+        # Find the row that ends with the delimiter
+        for row in table:
+            if row[-1:] == '~':
+                output_str = row[:-1]
 
         return DataBlock(list(output_str))
 
