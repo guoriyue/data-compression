@@ -1,35 +1,55 @@
-"id":
-"num": "00
-"name":
-"img": "http://www.serebii.net/pokemongo/pokemon/
-"type":
-"height":
-"weight":
-"candy":
- Candy",
-"candy_count":
-"egg":
-"spawn_chance":
-"avg_spawns":
-"spawn_time":
-"multipliers":
-"weaknesses": 
-"prev_evolution": 
-"next_evolution": 
-"Fire"
-"Flying"
-"Grass"
-"Poison"
-"Water"
-"Ground"
-"Rock"
-"Electric"
-"Bug"
-"Psychic"
-"Normal"
-"candy": "None"
-"egg": "Not in Eggs"
-"spawn_chance": 0,
-"avg_spawns": 0,
-"spawn_time": "N/A",
-"multipliers": null,
+{
+  "id": 6,
+  "num": "006",
+  "name": "Charizard",
+  "img": "http://www.serebii.net/pokemongo/pokemon/006.png",
+  "type": [
+    "Fire",
+    "Flying"
+  ],
+  "height": "1.70 m",
+  "weight": "90.5 kg",
+  "candy": "Charmander Candy",
+  "egg": "Not in Eggs",
+  "spawn_chance": 0.0031,
+  "avg_spawns": 0.31,
+  "spawn_time": "13:34",
+  "multipliers": null,
+  "weaknesses": [
+    "Water",
+    "Electric",
+    "Rock"
+  ],
+  "prev_evolution": [
+    {
+      "num": "004",
+      "name": "Charmander"
+    },
+    {
+      "num": "005",
+      "name": "Charmeleon"
+    }
+  ]
+}
+  "height": "1.09 m",
+  "weight": "30.0 kg",
+  "candy": "None",
+  "egg": "10 km",
+  "spawn_chance": 0.074,
+  "avg_spawns": 7.4,
+  "spawn_time": "04:28",
+  "weight": "7.5 kg",
+  "candy": "Omanyte Candy",
+  "candy_count": 50,
+  "egg": "10 km",
+  "spawn_chance": 0.14,
+  "avg_spawns": 14,
+  "spawn_time": "10:23",
+  "multipliers": [
+    2.12
+  ],
+  "weaknesses": [
+    "Electric",
+    "Grass",
+    "Fighting",
+    "Ground",

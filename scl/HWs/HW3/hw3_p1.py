@@ -1,5 +1,7 @@
 import argparse
 import os
+import sys
+sys.path.append('/Users/guomingfei/Desktop/stanford_compression_library')
 
 from scl.compressors.lz77 import LZ77Encoder
 from scl.core.data_block import DataBlock

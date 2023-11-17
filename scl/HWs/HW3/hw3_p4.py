@@ -78,9 +78,27 @@ class NoisyLFSRFreqModel:
         # total frequency to any value you want. For the autograder purposes, you can assume noise_prob to be in
         # multiples of 0.001 (e.g., 0.001, 0.002, 0.003, etc.), i.e. noise_prob = 0.001 * noise_prob_int.
         # You can also use the helper function `convert_float_prob_to_int` to convert a float probability to a valid int
-        raise NotImplementedError
+        # raise NotImplementedError
         ###############################
+        
+        if len(self.past_few_symbols) < self.tap:
+            self.past_few_symbols.append(s)
+            return
+        else:
+            self.past_few_symbols.pop(0)
+            self.past_few_symbols.append(s)
+        
+        # Calculate the deterministic prediction based on LFSR
+        deterministic_prediction = self.past_few_symbols[-1] ^ self.past_few_symbols[-self.tap]
 
+        prob_0 = (1 - self.noise_prob if deterministic_prediction == 0 else self.noise_prob)
+        prob_1 = 1 - prob_0
+
+        freq_0 = convert_float_prob_to_int(prob_0)
+        freq_1 = convert_float_prob_to_int(prob_1)
+        
+        self.freqs_current = Frequencies({0: freq_0, 1: freq_1})
+        
         aec_params = AECParams() # params used for arithmetic coding in SCL
         assert self.freqs_current.total_freq <= aec_params.MAX_ALLOWED_TOTAL_FREQ, (
             f"Total freq {self.freqs_current.total_freq} is greater than "
