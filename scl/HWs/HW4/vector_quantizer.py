@@ -69,12 +69,21 @@ def build_kmeans_codebook(
     #####################################################
     # ADD DETAILS HERE
     ######################################################
+    
+    codebook = data_npy_2d[np.random.choice(data_npy_2d.shape[0], num_vectors, replace=False)]
+
+    for _ in range(max_iter):
+        assignments = np.argmin(scipy.spatial.distance.cdist(data_npy_2d, codebook), axis=1)
+        for i in range(num_vectors):
+            if np.sum(assignments == i) > 0:
+                codebook[i] = np.mean(data_npy_2d[assignments == i], axis=0)
+
 
     # TODO: add code here to set the codebook appropriately using K-means.
     # NOTE:
     # (1) don't directly call scipy/numpy library function which directly gives out K-means (duh)
     # (2) You may use mse(v1, v2), and find_nearest(codebook_npy, data_vector_npy, dist_func) functions
-    raise NotImplementedError("TODO: add code here")
+    
     #####################################################
 
     return codebook
